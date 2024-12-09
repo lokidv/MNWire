@@ -53,17 +53,15 @@ npm run build
 
 # Write out the environment variables to a system-wide environment file
 # Append them to /etc/environment so they are available system-wide
-{
-  echo "XUI_USERNAME=${XUI_USERNAME}"
-  echo "XUI_PASSWORD=${XUI_PASSWORD}"
-  echo "XUI_PORT=${XUI_PORT}"
-  echo "XUI_WEB_BASE_PATH=${XUI_WEB_BASE_PATH}"
-  echo "WIREGUARD_INBOUND=${WIREGUARD_INBOUND}"
-  echo "DATABASE_URL=${DATABASE_URL}"
-  echo "PORT=${PORT}"
-  echo "XUI_USE_SSL=${XUI_USE_SSL}"
-  echo "API_PASSWORD=${API_PASSWORD}"
-} | sudo tee -a /etc/environment > /dev/null
+export XUI_USERNAME=${XUI_USERNAME}
+export XUI_PASSWORD=${XUI_PASSWORD}
+export XUI_PORT=${XUI_PORT}
+export XUI_WEB_BASE_PATH=${XUI_WEB_BASE_PATH}
+export WIREGUARD_INBOUND=${WIREGUARD_INBOUND}
+export DATABASE_URL=${DATABASE_URL}
+export PORT=${PORT}
+export XUI_USE_SSL=${XUI_USE_SSL}
+export API_PASSWORD=${API_PASSWORD}
 
 # Reload environment variables from /etc/environment
 source /etc/environment
