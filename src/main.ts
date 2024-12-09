@@ -1,14 +1,14 @@
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { config } from 'dotenv';
 import { AppModule } from './app.module';
 import { GlobalPasswordGuard } from './guards/password.guard';
+
+config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const configService = app.get<ConfigService>(ConfigService);
-
-  const PORT = configService.getOrThrow<number>('PORT');
+  const PORT = process.env.PORT;
 
   app.useGlobalGuards(new GlobalPasswordGuard());
 
