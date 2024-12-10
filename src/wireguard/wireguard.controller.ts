@@ -5,7 +5,6 @@ import { WireguardService } from './wireguard.service';
 @Controller()
 export class WireguardController {
   constructor(private readonly wireguardService: WireguardService) {}
-
   @Get('create')
   async create(@Query('publicKey') remark: string, @Res() res: Response) {
     const result = await this.wireguardService.create(remark);

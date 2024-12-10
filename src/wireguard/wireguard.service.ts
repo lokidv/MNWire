@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DatabaseService } from 'src/database/database.service';
 import { ApiService } from 'src/services/api.service';
@@ -10,13 +10,18 @@ import {
 
 @Injectable()
 export class WireguardService {
+  private logger = new Logger(WireguardService.name);
+
   constructor(
     private readonly apiService: ApiService,
     private readonly configService: ConfigService,
     private readonly database: DatabaseService,
-  ) {}
+  ) {
+    console.log('HERE 5');
+  }
 
   private getNextAllowedIP(peers: any[]) {
+    console.log('HERE 6');
     let maxLastOctet = 0;
     let networkPrefix: string | null = null;
     let cidrMask: string | null = null;
@@ -62,8 +67,9 @@ export class WireguardService {
   }
 
   async create(remark: string) {
-    console.log(this.apiService.http.defaults);
-    const inbound = +this.configService.get('WIREGUARD_INBOUND');
+    console.log('HERE 7');
+    this.logger.debug(this.apiService.http.defaults.baseURL);
+    const inbound = +this.configService.getOrThrow('WIREGUARD_INBOUND');
     const configExist = await this.database.config.findUnique({
       where: { remark },
     });

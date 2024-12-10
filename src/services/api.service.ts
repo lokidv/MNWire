@@ -10,10 +10,12 @@ export class ApiService {
   public http: Axios;
 
   constructor(private readonly configService: ConfigService) {
+    console.log('HERE 4');
     this.http = this.getAxiosInstance();
   }
 
   public getPublicIp() {
+    console.log('HERE 3');
     const interfaces = os.networkInterfaces();
     return Object.values(interfaces)
       .flat()
@@ -23,6 +25,7 @@ export class ApiService {
   }
 
   private getAxiosInstance() {
+    console.log('HERE 1');
     const useSSL = this.configService.get('XUI_USE_SSL');
     const XUI_PORT = this.configService.getOrThrow<number>('XUI_PORT');
     const XUI_WEB_BASE_PATH =
@@ -34,6 +37,7 @@ export class ApiService {
     const protocol = useSSL == true ? 'https' : 'http';
 
     const cookieJar = new CookieJar();
+    console.log('HERE 2');
     const instance = axios.create({
       withCredentials: true,
       jar: cookieJar,
