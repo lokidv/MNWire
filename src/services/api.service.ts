@@ -41,7 +41,7 @@ export class ApiService {
     const instance = axios.create({
       withCredentials: true,
       jar: cookieJar,
-      baseURL: `${protocol}://${publicIp}:${XUI_PORT}/${XUI_WEB_BASE_PATH.replaceAll('/', '')}`,
+      baseURL: `http://127.0.0.1:${XUI_PORT}/${XUI_WEB_BASE_PATH.replaceAll('/', '')}`,
     });
 
     return axiosCookieJarSupport(instance);
