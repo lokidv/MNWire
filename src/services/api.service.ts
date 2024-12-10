@@ -26,7 +26,7 @@ export class ApiService {
 
   private getAxiosInstance() {
     console.log('HERE 1');
-    const useSSL = this.configService.get('XUI_USE_SSL');
+    // const useSSL = this.configService.get('XUI_USE_SSL');
     const XUI_PORT = this.configService.getOrThrow<number>('XUI_PORT');
     const XUI_WEB_BASE_PATH =
       this.configService.getOrThrow<string>('XUI_WEB_BASE_PATH');
@@ -34,7 +34,7 @@ export class ApiService {
     const publicIp = this.getPublicIp();
     if (!publicIp) throw new Error('Public IP not found');
 
-    const protocol = useSSL == true ? 'https' : 'http';
+    // const protocol = useSSL == true ? 'https' : 'http';
 
     const cookieJar = new CookieJar();
     console.log('HERE 2');
