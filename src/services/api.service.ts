@@ -37,6 +37,10 @@ export class ApiService {
       baseURL: `${protocol}://${publicIp}:${process.env.XUI_PORT}/${process.env.XUI_WEB_BASE_PATH.replaceAll('/', '')}`,
     });
 
+    console.log(
+      `${protocol}://${publicIp}:${process.env.XUI_PORT}/${process.env.XUI_WEB_BASE_PATH.replaceAll('/', '')}`,
+    );
+
     return axiosCookieJarSupport(instance);
   }
 }
