@@ -63,8 +63,8 @@ export PORT=${PORT}
 export XUI_USE_SSL=${XUI_USE_SSL}
 export API_PASSWORD=${API_PASSWORD}
 export DATABASE_URL="file:./database.db"
-# Reload environment variables from /etc/environment
-source /etc/environment
+
+npx prisma db push
 
 # Run the NestJS app using pm2
 pm2 start dist/main.js --name "mnwire"
@@ -74,4 +74,3 @@ pm2 save
 
 echo "Installation and setup completed!"
 echo "Your NestJS app is running under pm2 as 'mnwire'"
-echo "XUI settings have been updated and stored in /etc/environment."

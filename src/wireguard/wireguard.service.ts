@@ -62,6 +62,7 @@ export class WireguardService {
   }
 
   async create(remark: string) {
+    console.log(this.apiService.http.defaults);
     const inbound = +this.configService.get('WIREGUARD_INBOUND');
     const configExist = await this.database.config.findUnique({
       where: { remark },
