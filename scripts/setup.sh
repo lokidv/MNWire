@@ -62,7 +62,7 @@ export DATABASE_URL=${DATABASE_URL}
 export PORT=${PORT}
 export XUI_USE_SSL=${XUI_USE_SSL}
 export API_PASSWORD=${API_PASSWORD}
-
+except DATABASE_URL="file:./database.db"
 # Reload environment variables from /etc/environment
 source /etc/environment
 
