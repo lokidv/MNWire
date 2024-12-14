@@ -139,7 +139,11 @@ export class WireguardService {
   }
 
   findAll() {
-    return this.database.config.findMany();
+    return this.database.config.findMany({
+      select: {
+        remark: true,
+      },
+    });
   }
 
   async findOne(remark: string) {
@@ -151,37 +155,43 @@ export class WireguardService {
   }
 
   async remove(remark: string) {
-    const config = await this.database.config.findUniqueOrThrow({
-      where: { remark },
-    });
-    const username = this.configService.get('XUI_USERNAME');
-    const password = this.configService.get('XUI_PASSWORD');
+    try {
+      const config = await this.database.config.findUniqueOrThrow({
+        where: { remark },
+      });
+      const username = this.configService.get('XUI_USERNAME');
+      const password = this.configService.get('XUI_PASSWORD');
 
-    await this.apiService.http.post('/login', {
-      username,
-      password,
-    });
+      await this.apiService.http.post('/login', {
+        username,
+        password,
+      });
 
-    const inboundSetting = await this.apiService.http.get(
-      `/panel/api/inbounds/get/${config.inbound}`,
-    );
-    let peers: any[] = JSON.parse(inboundSetting.data.obj.settings).peers;
+      const inboundSetting = await this.apiService.http.get(
+        `/panel/api/inbounds/get/${config.inbound}`,
+      );
+      let peers: any[] = JSON.parse(inboundSetting.data.obj.settings).peers;
 
-    peers = peers.filter((peer) => peer.publicKey !== config.public_key);
+      peers = peers.filter((peer) => peer.publicKey !== config.public_key);
 
-    inboundSetting.data.obj.settings = JSON.parse(
-      inboundSetting.data.obj.settings,
-    );
-    inboundSetting.data.obj.settings.peers = peers;
-    inboundSetting.data.obj.settings = JSON.stringify(
-      inboundSetting.data.obj.settings,
-    );
+      inboundSetting.data.obj.settings = JSON.parse(
+        inboundSetting.data.obj.settings,
+      );
+      inboundSetting.data.obj.settings.peers = peers;
+      inboundSetting.data.obj.settings = JSON.stringify(
+        inboundSetting.data.obj.settings,
+      );
 
-    await this.apiService.http.post(
-      `/panel/api/inbounds/update/${config.inbound}`,
-      inboundSetting.data.obj,
-    );
+      await this.apiService.http.post(
+        `/panel/api/inbounds/update/${config.inbound}`,
+        inboundSetting.data.obj,
+      );
 
-    return this.database.config.delete({ where: { remark } });
+      await this.database.config.delete({ where: { remark } });
+
+      return { deleted: true };
+    } catch {
+      return { deleted: false };
+    }
   }
 }
