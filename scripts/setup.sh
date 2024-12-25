@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+sed -i "s/#\$nrconf{kernelhints} = -1;/\$nrconf{kernelhints} = -1;/g" /etc/needrestart/needrestart.conf
+
 # Ask user for other environment variables (except XUI_ since we'll get them after the installer)
 read -p "Enter WIREGUARD_INBOUND (default: 4): " WIREGUARD_INBOUND
 WIREGUARD_INBOUND=${WIREGUARD_INBOUND:-4}
