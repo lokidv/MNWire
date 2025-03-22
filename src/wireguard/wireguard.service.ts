@@ -22,9 +22,9 @@ export class WireguardService {
 
   private getNextAllowedIP(peers: any[]) {
     console.log('HERE 6');
-    let maxLastOctet = 0;
     let networkPrefix: string | null = null;
     let cidrMask: string | null = null;
+    const usedOctets = new Set<number>();
 
     for (const peer of peers) {
       for (const ip of peer.allowedIPs) {
@@ -33,6 +33,7 @@ export class WireguardService {
         const parts = ipAddress.split('.');
 
         const currentPrefix = parts.slice(0, 3).join('.');
+        const lastOctet = parseInt(parts[3], 10);
 
         // If we haven't set a prefix yet, set it from the first encountered IP
         if (!networkPrefix) {
@@ -42,10 +43,7 @@ export class WireguardService {
 
         // If this IP shares the same prefix as our chosen network prefix
         if (currentPrefix === networkPrefix) {
-          const lastOctet = parseInt(parts[3], 10);
-          if (lastOctet > maxLastOctet) {
-            maxLastOctet = lastOctet;
-          }
+          usedOctets.add(lastOctet);
           // If we haven't set a CIDR mask yet, set it from this IP
           if (!cidrMask) {
             cidrMask = mask;
@@ -62,8 +60,22 @@ export class WireguardService {
       cidrMask = '32';
     }
 
-    // Increment the highest octet by one for the next allowed IP
-    return `${networkPrefix}.${maxLastOctet + 1}/${cidrMask}`;
+    // Find the lowest available octet between 2 and 250
+    let nextOctet = 2;
+    while (nextOctet <= 250) {
+      if (!usedOctets.has(nextOctet)) {
+        break;
+      }
+      nextOctet++;
+    }
+
+    // If all octets between 2-250 are used (unlikely), reset to 2
+    if (nextOctet > 250) {
+      this.logger.warn('All octets between 2-250 are used, reusing octet 2');
+      nextOctet = 2;
+    }
+
+    return `${networkPrefix}.${nextOctet}/${cidrMask}`;
   }
 
   async create(remark: string) {
