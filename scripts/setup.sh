@@ -27,12 +27,24 @@ DATABASE_URL="file:./database.db"
 apt update -y
 apt install -y curl git
 
-# Install Node.js (LTS) from NodeSource
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-apt install -y nodejs
+# Download and install nvm:
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+
+# in lieu of restarting the shell
+\. "$HOME/.nvm/nvm.sh"
+
+# Download and install Node.js:
+nvm install 22
+
+# Verify the Node.js version:
+node -v # Should print "v22.14.0".
+nvm current # Should print "v22.14.0".
+
+# Verify npm version:
+npm -v # Should print "10.9.2".
 
 # Install PM2 globally
-sudo npm install pm2@latest -g 
+npm install pm2@latest -g 
 
 # Run the 3x-ui installer script
 bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
