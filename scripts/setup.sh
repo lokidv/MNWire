@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sed -i "s/#\$nrconf{kernelhints} = -1;/\$nrconf{kernelhints} = -1;/g" /etc/needrestart/needrestart.conf
+sed -i "s/#\$nrconf{kernelhints} = -1;/\$nrconf{kernelhints} = -1;/g" /etc/needrestart/needrestart.conf 
 
 # Ask user for other environment variables (except XUI_ since we'll get them after the installer)
 read -p "Enter WIREGUARD_INBOUND (default: 4): " WIREGUARD_INBOUND
@@ -24,15 +24,15 @@ fi
 DATABASE_URL="file:./database.db"
 
 # Update & install prerequisites
-sudo apt-get update -y
-sudo apt-get install -y curl git
+apt-get update -y --preserve-env
+apt-get install -y curl git --preserve-env
 
 # Install Node.js (LTS) from NodeSource
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-sudo apt-get install -y nodejs
+apt-get install -y nodejs --preserve-env
 
 # Install PM2 globally
-sudo npm install pm2@latest -g
+npm install pm2@latest -g 
 
 # Run the 3x-ui installer script
 bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
