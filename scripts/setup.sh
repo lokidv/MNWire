@@ -32,7 +32,7 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 apt-get install -y nodejs --preserve-env
 
 # Install PM2 globally
-npm install pm2@latest -g 
+sudo npm install pm2@latest -g 
 
 # Run the 3x-ui installer script
 bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
