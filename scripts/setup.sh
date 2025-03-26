@@ -24,12 +24,12 @@ fi
 DATABASE_URL="file:./database.db"
 
 # Update & install prerequisites
-apt-get update -y --preserve-env
-apt-get install -y curl git --preserve-env
+apt update -y
+apt install -y curl git
 
 # Install Node.js (LTS) from NodeSource
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-apt-get install -y nodejs --preserve-env
+apt install -y nodejs
 
 # Install PM2 globally
 sudo npm install pm2@latest -g 
